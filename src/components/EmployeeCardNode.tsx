@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { User, ChevronDown, ChevronRight, Building2, MapPin, Crown } from 'lucide-react';
 import type { TreeNode } from '../types/orgChart';
+import { getLocationColorTheme } from '../utils/locationColors';
 
 interface EmployeeNodeData {
   employee: TreeNode;
@@ -41,6 +42,7 @@ export const EmployeeCardNode = memo(({ data }: { data: EmployeeNodeData }) => {
     .toUpperCase();
 
   const isCEO = !employee.managerCode;
+  const locationTheme = getLocationColorTheme(employee.location);
 
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -59,17 +61,20 @@ export const EmployeeCardNode = memo(({ data }: { data: EmployeeNodeData }) => {
     <div
       onClick={handleCardClick}
       className={`relative w-64 rounded-2xl border transition-all duration-200 cursor-pointer select-none overflow-hidden bg-white text-slate-900 ${
-        isFilteredOut
-          ? 'opacity-30 scale-95 border-slate-200 bg-white'
+        isFilteredOut && !isSelected
+          ? 'opacity-40 scale-95 border-slate-200 bg-white'
           : isSelected
-          ? 'ring-4 ring-blue-500/40 border-blue-600 bg-white shadow-2xl'
+          ? 'ring-4 ring-blue-500/50 border-blue-600 bg-white shadow-2xl scale-[1.02] z-10 opacity-100'
           : isSearchMatch
-          ? 'ring-4 ring-amber-400/80 border-amber-500 bg-white shadow-2xl'
+          ? 'ring-4 ring-amber-400/80 border-amber-500 bg-white shadow-2xl opacity-100'
           : isFilterMatch
-          ? 'border-cyan-500 bg-white shadow-xl'
-          : 'border-slate-200 bg-white text-slate-900 hover:border-blue-400 shadow-md hover:shadow-xl'
+          ? 'border-cyan-500 bg-white shadow-xl opacity-100'
+          : 'border-slate-200 bg-white text-slate-900 hover:border-blue-500 shadow-md hover:shadow-xl opacity-100'
       }`}
     >
+      {/* Location Site Color Accent Top Bar */}
+      <div className={`h-1.5 w-full ${locationTheme.accentBgClass}`} title={`Site: ${employee.location || 'Default'}`} />
+
       {/* Top Handle for Manager Edge */}
       <Handle
         type="target"
@@ -100,10 +105,10 @@ export const EmployeeCardNode = memo(({ data }: { data: EmployeeNodeData }) => {
           </div>
 
           <div className="min-w-0 flex-1">
-            <h4 className="text-sm font-extrabold text-slate-900 truncate tracking-tight">
+            <h4 className="text-[14px] font-bold text-slate-900 tracking-normal leading-tight truncate">
               {employee.name}
             </h4>
-            <p className="text-xs font-semibold text-slate-600 truncate mt-0.5">
+            <p className="text-xs font-medium text-slate-600 truncate mt-0.5">
               {employee.designation}
             </p>
             <span className="inline-block mt-1 text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
@@ -113,7 +118,7 @@ export const EmployeeCardNode = memo(({ data }: { data: EmployeeNodeData }) => {
         </div>
 
         {/* Details: Dept & Business Unit */}
-        <div className="pt-2 border-t border-slate-100 flex flex-col gap-1 text-[11px] text-slate-600">
+        <div className="pt-2 border-t border-slate-100 flex flex-col gap-1.5 text-[11px] text-slate-600">
           <div className="flex items-center justify-between gap-1">
             <span className="inline-flex items-center gap-1 font-bold text-slate-800 truncate">
               <Building2 className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
@@ -127,9 +132,12 @@ export const EmployeeCardNode = memo(({ data }: { data: EmployeeNodeData }) => {
           </div>
 
           {employee.location && (
-            <div className="flex items-center gap-1.5 truncate text-[10px] text-slate-500 font-semibold">
-              <MapPin className="w-3.5 h-3.5 text-rose-500 flex-shrink-0" />
-              <span className="truncate">{employee.location}</span>
+            <div className="flex items-center">
+              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-bold shadow-2xs max-w-full truncate ${locationTheme.bgClass} ${locationTheme.borderClass} ${locationTheme.textClass}`}>
+                <span className={`w-2 h-2 rounded-full ${locationTheme.dotClass} flex-shrink-0 shadow-2xs`} />
+                <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+                <span className="truncate">{employee.location}</span>
+              </span>
             </div>
           )}
         </div>

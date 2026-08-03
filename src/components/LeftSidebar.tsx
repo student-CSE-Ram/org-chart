@@ -9,6 +9,7 @@ import {
   ChevronLeft
 } from 'lucide-react';
 import type { Employee, TreeNode } from '../types/orgChart';
+import { getLocationColorTheme } from '../utils/locationColors';
 
 interface LeftSidebarProps {
   employees: Employee[];
@@ -140,9 +141,17 @@ export const LeftSidebar: React.FC<LeftSidebarProps> = ({
                   </span>
                 )}
               </div>
-              <p className={`text-[10px] truncate ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                {node.designation}
-              </p>
+              <div className="flex items-center gap-1.5 truncate mt-0.5">
+                {node.location && (
+                  <span
+                    className={`w-2 h-2 rounded-full ${getLocationColorTheme(node.location).dotClass} flex-shrink-0`}
+                    title={`Site: ${node.location}`}
+                  />
+                )}
+                <p className={`text-[10px] truncate ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                  {node.designation}
+                </p>
+              </div>
             </div>
           </div>
 

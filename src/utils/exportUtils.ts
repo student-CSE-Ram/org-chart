@@ -1,6 +1,7 @@
 import jsPDF from 'jspdf';
 import type { Employee, BrandingConfig } from '../types/orgChart';
 import { calculateFlowElements } from './layoutCalculator';
+import { getLocationColorTheme } from './locationColors';
 
 /**
  * Builds a 100% complete, pixel-perfect SVG string containing ALL employees in the company (zero collapsed nodes, zero cropping).
@@ -85,6 +86,7 @@ export const generateCompleteOrgChartSVG = (
     const x = pos.x;
     const y = pos.y;
     const isCEO = !emp.managerCode;
+    const locTheme = getLocationColorTheme(emp.location);
 
     const initials = (emp.name || '')
       .split(' ')
@@ -104,19 +106,21 @@ export const generateCompleteOrgChartSVG = (
         <!-- Card Container -->
         <rect x="0" y="0" width="${NODE_WIDTH}" height="${NODE_HEIGHT}" rx="16" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.04))" />
         
+        <!-- Location Site Color Accent Top Bar -->
+        <path d="M 0 16 A 16 16 0 0 1 16 0 L 244 0 A 16 16 0 0 1 260 0 L 260 6 L 0 6 Z" fill="${locTheme.hex}" />
+
         <!-- Header Bar -->
-        <rect x="0" y="0" width="${NODE_WIDTH}" height="32" rx="16" fill="#f1f5f9" />
-        <rect x="0" y="16" width="${NODE_WIDTH}" height="16" fill="#f1f5f9" />
+        <rect x="0" y="6" width="${NODE_WIDTH}" height="26" fill="#f1f5f9" />
         
-        <text x="12" y="21" font-family="'Inter', system-ui, sans-serif" font-size="10" font-weight="700" fill="#475569">${safeDepartment}</text>
+        <text x="12" y="23" font-family="'Inter', system-ui, sans-serif" font-size="10" font-weight="700" fill="#475569">${safeDepartment}</text>
         
         ${
           isCEO
-            ? `<g transform="translate(160, 6)">
+            ? `<g transform="translate(160, 9)">
                 <rect x="0" y="0" width="88" height="20" rx="10" fill="#fef3c7" stroke="#fde68a" />
                 <text x="44" y="14" font-family="'Inter', system-ui, sans-serif" font-size="9" font-weight="800" fill="#78350f" text-anchor="middle">👑 CEO / MD</text>
                </g>`
-            : `<circle cx="242" cy="16" r="4" fill="#10b981" />`
+            : `<circle cx="242" cy="19" r="4" fill="#10b981" />`
         }
 
         <!-- User Initials Icon Avatar -->
@@ -136,7 +140,15 @@ export const generateCompleteOrgChartSVG = (
 
         <!-- Dept / Location Footer -->
         <text x="14" y="125" font-family="'Inter', system-ui, sans-serif" font-size="11" font-weight="700" fill="#1e293b">${safeDepartment}</text>
-        ${safeLocation ? `<text x="14" y="142" font-family="'Inter', system-ui, sans-serif" font-size="10" font-weight="600" fill="#64748b">📍 ${safeLocation}</text>` : ''}
+        ${
+          safeLocation
+            ? `<g transform="translate(14, 132)">
+                <rect x="0" y="0" width="${Math.min(230, safeLocation.length * 7 + 24)}" height="20" rx="6" fill="${locTheme.bgHex}" stroke="${locTheme.borderHex}" stroke-width="1" />
+                <circle cx="10" cy="10" r="3" fill="${locTheme.hex}" />
+                <text x="18" y="14" font-family="'Inter', system-ui, sans-serif" font-size="9" font-weight="800" fill="${locTheme.textHex}">📍 ${safeLocation}</text>
+               </g>`
+            : ''
+        }
       </g>
     `;
   });
@@ -335,9 +347,9 @@ export const downloadStandaloneHtmlBundle = (
           <p class="text-xs text-blue-600 font-bold mt-0.5">\${emp.designation}</p>
           <p class="text-xs text-slate-500 font-semibold mt-1">\${emp.department} \${emp.businessUnit ? '• ' + emp.businessUnit : ''}</p>
         </div>
-        <div class="pt-2.5 border-t border-slate-100 flex justify-between text-[11px] font-semibold text-slate-600">
+        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] font-semibold text-slate-600">
           <span>Manager: \${emp.managerCode || 'CEO / MD'}</span>
-          <span>\${emp.location || ''}</span>
+          \${emp.location ? \`<span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200 font-bold">📍 \${emp.location}</span>\` : ''}
         </div>
       \`;
       container.appendChild(card);

@@ -13,6 +13,7 @@ import {
   Crown
 } from 'lucide-react';
 import type { TreeNode, Employee } from '../types/orgChart';
+import { getLocationColorTheme } from '../utils/locationColors';
 
 interface EmployeeDetailsDrawerProps {
   employee: TreeNode | null;
@@ -41,6 +42,7 @@ export const EmployeeDetailsDrawer: React.FC<EmployeeDetailsDrawerProps> = ({
     .toUpperCase();
 
   const isCEO = !employee.managerCode;
+  const locationTheme = getLocationColorTheme(employee.location);
 
   // Find manager
   const manager = allEmployees.find((emp) => emp.employeeCode === employee.managerCode);
@@ -51,7 +53,7 @@ export const EmployeeDetailsDrawer: React.FC<EmployeeDetailsDrawerProps> = ({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/70 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/35 backdrop-blur-xs animate-fadeIn">
       <div
         className={`w-full max-w-lg max-h-[90vh] sm:max-h-[85vh] rounded-2xl border shadow-2xl flex flex-col overflow-hidden animate-scaleUp transition-colors ${
           isDarkMode
@@ -83,8 +85,12 @@ export const EmployeeDetailsDrawer: React.FC<EmployeeDetailsDrawerProps> = ({
             <span
               className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
                 employee.status?.toLowerCase() === 'active'
-                  ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30'
-                  : 'bg-rose-500/20 text-rose-700 dark:text-rose-400 border border-rose-500/30'
+                  ? isDarkMode
+                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                    : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                  : isDarkMode
+                  ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                  : 'bg-rose-50 text-rose-700 border border-rose-200'
               }`}
             >
               {employee.status}
@@ -126,8 +132,8 @@ export const EmployeeDetailsDrawer: React.FC<EmployeeDetailsDrawerProps> = ({
             </div>
 
             <div className="min-w-0 flex-1">
-              <h2 className="text-base sm:text-xl font-bold tracking-tight truncate">{employee.name}</h2>
-              <p className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 mt-0.5 truncate">
+              <h2 className={`text-base sm:text-xl font-bold tracking-normal truncate ${isDarkMode ? 'text-slate-100' : 'text-slate-900'}`}>{employee.name}</h2>
+              <p className={`text-xs sm:text-sm font-semibold mt-0.5 truncate ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`}>
                 {employee.designation}
               </p>
               <p className={`text-[11px] sm:text-xs mt-0.5 truncate ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>
@@ -170,9 +176,12 @@ export const EmployeeDetailsDrawer: React.FC<EmployeeDetailsDrawerProps> = ({
             </div>
 
             {employee.location && (
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-rose-500 flex-shrink-0" />
-                <span className="truncate">{employee.location}</span>
+              <div className="flex items-center">
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-bold ${locationTheme.bgClass} ${locationTheme.borderClass} ${locationTheme.textClass}`}>
+                  <span className={`w-2 h-2 rounded-full ${locationTheme.dotClass} flex-shrink-0`} />
+                  <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+                  <span className="truncate">{employee.location}</span>
+                </span>
               </div>
             )}
 

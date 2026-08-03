@@ -389,6 +389,7 @@ export const App: React.FC = () => {
             onSelectEmployee={handleSelectEmployeeNode}
             selectedEmployeeCode={selectedEmployeeCode}
             filters={filters}
+            onSelectLocation={(loc) => handleFilterChange({ location: loc })}
             orientation={orientation}
             primaryColor={branding.primaryColor}
             isDarkMode={isDarkMode}

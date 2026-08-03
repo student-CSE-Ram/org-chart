@@ -51,7 +51,7 @@ export const downloadExcelTemplate = (filename = 'Organization_Chart_Template.xl
     { Rule: 'Designation', Details: 'Job title / role.' },
     { Rule: 'Department', Details: 'Department name (e.g. Engineering & Tech, Human Resources, Sales).' },
     { Rule: 'Business Unit', Details: 'Division or Business Unit (e.g. Corporate HQ, Digital Solutions).' },
-    { Rule: 'Location', Details: 'Office location or city.' },
+    { Rule: 'Location', Details: 'Office location, plant, or site name (e.g. Mumbai, HQ, Bengaluru Innovation Center, Kolkata Steel Plant). Used for site color-coding on the Org Chart.' },
     { Rule: 'Email', Details: 'Work email address.' },
     { Rule: 'Phone', Details: 'Work phone number.' },
     { Rule: 'Date of Joining', Details: 'Date format: YYYY-MM-DD.' },

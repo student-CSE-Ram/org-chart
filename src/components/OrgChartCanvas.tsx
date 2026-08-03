@@ -13,6 +13,7 @@ import '@xyflow/react/dist/style.css';
 import { Maximize, PlusSquare, MinusSquare } from 'lucide-react';
 
 import { EmployeeCardNode } from './EmployeeCardNode';
+import { LocationLegend } from './LocationLegend';
 import type { Employee, TreeNode, FilterState, LayoutOrientation } from '../types/orgChart';
 import { calculateFlowElements } from '../utils/layoutCalculator';
 
@@ -23,6 +24,7 @@ interface OrgChartCanvasInnerProps {
   onSelectEmployee: (emp: TreeNode) => void;
   selectedEmployeeCode?: string;
   filters: FilterState;
+  onSelectLocation?: (location: string) => void;
   orientation: LayoutOrientation;
   primaryColor: string;
   isDarkMode: boolean;
@@ -41,6 +43,7 @@ const OrgChartCanvasInner: React.FC<OrgChartCanvasInnerProps> = ({
   onSelectEmployee,
   selectedEmployeeCode,
   filters,
+  onSelectLocation,
   orientation,
   primaryColor,
   isDarkMode,
@@ -48,6 +51,17 @@ const OrgChartCanvasInner: React.FC<OrgChartCanvasInnerProps> = ({
   onCollapseAll
 }) => {
   const { fitView } = useReactFlow();
+
+  // Extract list of locations across active employees
+  const locationsList = useMemo(() => {
+    const set = new Set<string>();
+    employees.forEach((emp) => {
+      if (emp.location && emp.location.trim()) {
+        set.add(emp.location.trim());
+      }
+    });
+    return Array.from(set).sort();
+  }, [employees]);
 
   // Compute layout nodes and edges
   const { initialNodes, initialEdges } = useMemo(() => {
@@ -162,7 +176,7 @@ const OrgChartCanvasInner: React.FC<OrgChartCanvasInnerProps> = ({
       }`}
     >
       {/* Quick Tree Viewport Controls Toolbar */}
-      <div className="absolute bottom-4 left-3 sm:bottom-auto sm:top-20 sm:left-auto sm:right-6 z-20 flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-xl backdrop-blur-md">
+      <div className="absolute top-20 right-3 sm:top-20 sm:right-6 z-20 flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-xl backdrop-blur-md">
         <button
           onClick={onExpandAll}
           className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold flex items-center gap-1 transition-colors"
@@ -190,6 +204,16 @@ const OrgChartCanvasInner: React.FC<OrgChartCanvasInnerProps> = ({
           <span className="hidden sm:inline">Fit View</span>
         </button>
       </div>
+
+      {/* Floating Interactive Location Sites Color Legend */}
+      {onSelectLocation && (
+        <LocationLegend
+          locations={locationsList}
+          selectedLocation={filters.location}
+          onSelectLocation={onSelectLocation}
+          isDarkMode={isDarkMode}
+        />
+      )}
 
       <ReactFlow
         nodes={nodes}

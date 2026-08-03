@@ -38,7 +38,7 @@ export const parseExcelFile = async (file: File): Promise<Employee[]> => {
             designation: getVal(['Designation', 'Title', 'Job Title', 'Role']),
             department: getVal(['Department', 'Dept']) || 'General',
             businessUnit: getVal(['Business Unit', 'BusinessUnit', 'BU', 'Division']) || 'Default BU',
-            location: getVal(['Location', 'City', 'Office']) || 'Head Office',
+            location: getVal(['Location', 'Site', 'Site Name', 'Office', 'City', 'Work Location', 'Branch', 'Plant']) || 'Head Office',
             email: getVal(['Email', 'Email Address', 'Mail']),
             phone: getVal(['Phone', 'Phone Number', 'Mobile', 'Contact']),
             dateOfJoining: getVal(['Date of Joining', 'DateOfJoining', 'DOJ', 'Joining Date']),

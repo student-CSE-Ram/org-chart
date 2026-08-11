@@ -11,12 +11,13 @@ export const downloadExcelTemplate = (filename = 'Organization_Chart_Template.xl
     'Department': emp.department,
     'Business Unit': emp.businessUnit,
     'Location': emp.location,
-    'Email': emp.email,
-    'Phone': emp.phone,
-    'Date of Joining': emp.dateOfJoining,
-    'Employment Type': emp.employmentType,
-    'Status': emp.status,
-    'Profile Image URL': emp.profileImageUrl
+    'Employee Category': emp.employeeCategory || 'White Collar',
+    'Email': emp.email || '',
+    'Phone': emp.phone || '',
+    'Date of Joining': emp.dateOfJoining || '',
+    'Employment Type': emp.employmentType || 'Permanent',
+    'Status': emp.status || 'Active',
+    'Profile Image URL': emp.profileImageUrl || ''
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(data);
@@ -26,10 +27,11 @@ export const downloadExcelTemplate = (filename = 'Organization_Chart_Template.xl
     { wch: 15 }, // Employee Code
     { wch: 25 }, // Employee Name
     { wch: 15 }, // Manager Code
-    { wch: 30 }, // Designation
+    { wch: 32 }, // Designation
     { wch: 22 }, // Department
     { wch: 22 }, // Business Unit
     { wch: 25 }, // Location
+    { wch: 18 }, // Employee Category
     { wch: 28 }, // Email
     { wch: 18 }, // Phone
     { wch: 16 }, // Date of Joining
@@ -45,14 +47,15 @@ export const downloadExcelTemplate = (filename = 'Organization_Chart_Template.xl
 
   // Create an instructions sheet
   const instructionsData = [
-    { Rule: 'Employee Code', Details: 'REQUIRED. Unique identifier for every employee (e.g. EMP-001).' },
+    { Rule: 'Employee Code', Details: 'REQUIRED. Unique identifier for every employee (e.g. EMP-001, BC-101).' },
     { Rule: 'Employee Name', Details: 'REQUIRED. Full name of the employee.' },
     { Rule: 'Manager Code', Details: 'REQUIRED (except CEO). Employee Code of their direct manager. Leave EMPTY for the CEO/MD.' },
-    { Rule: 'Designation', Details: 'Job title / role.' },
-    { Rule: 'Department', Details: 'Department name (e.g. Engineering & Tech, Human Resources, Sales).' },
-    { Rule: 'Business Unit', Details: 'Division or Business Unit (e.g. Corporate HQ, Digital Solutions).' },
-    { Rule: 'Location', Details: 'Office location, plant, or site name (e.g. Mumbai, HQ, Bengaluru Innovation Center, Kolkata Steel Plant). Used for site color-coding on the Org Chart.' },
-    { Rule: 'Email', Details: 'Work email address.' },
+    { Rule: 'Designation', Details: 'Job title / role (e.g., Shift Incharge - Blast Furnace, Operator, Manager).' },
+    { Rule: 'Department', Details: 'Department name (e.g. Plant Operations, Engineering & Tech, Human Resources).' },
+    { Rule: 'Business Unit', Details: 'Division or Business Unit (e.g. Steel & Manufacturing, Corporate HQ).' },
+    { Rule: 'Location', Details: 'Office location, plant, or site name (e.g. Kolkata Steel Plant, Mumbai HQ).' },
+    { Rule: 'Employee Category', Details: 'OPTIONAL. Specify "White Collar" or "Blue Collar". NOTE: All employees reporting under a "Shift Incharge" are automatically categorized as Blue Collar if not specified.' },
+    { Rule: 'Email', Details: 'Work email address (Optional for Blue Collar staff).' },
     { Rule: 'Phone', Details: 'Work phone number.' },
     { Rule: 'Date of Joining', Details: 'Date format: YYYY-MM-DD.' },
     { Rule: 'Employment Type', Details: 'Permanent, Contract, Intern, or Consultant.' },
@@ -61,7 +64,7 @@ export const downloadExcelTemplate = (filename = 'Organization_Chart_Template.xl
   ];
 
   const instructionsSheet = XLSX.utils.json_to_sheet(instructionsData);
-  instructionsSheet['!cols'] = [{ wch: 22 }, { wch: 75 }];
+  instructionsSheet['!cols'] = [{ wch: 22 }, { wch: 85 }];
   XLSX.utils.book_append_sheet(workbook, instructionsSheet, 'Instructions & Rules');
 
   XLSX.writeFile(workbook, filename);

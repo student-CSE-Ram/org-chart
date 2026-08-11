@@ -287,7 +287,7 @@ export const ExcelUploadModal: React.FC<ExcelUploadModalProps> = ({
                         <tr key={i} className="hover:bg-slate-800/50">
                           <td className="p-2.5 font-mono text-blue-400 font-medium">{emp.employeeCode}</td>
                           <td className="p-2.5 font-semibold text-slate-100">{emp.name}</td>
-                          <td className="p-2.5 font-mono text-slate-400">{emp.managerCode || '(CEO/Root)'}</td>
+                          <td className="p-2.5 font-mono text-slate-400">{emp.managerCode || '(CMD/Root)'}</td>
                           <td className="p-2.5">{emp.designation}</td>
                           <td className="p-2.5">{emp.department}</td>
                           <td className="p-2.5 text-slate-400">{emp.location}</td>

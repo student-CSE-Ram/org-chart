@@ -12,12 +12,15 @@ export interface Employee {
   employmentType?: 'Permanent' | 'Contract' | 'Intern' | 'Consultant' | string;
   status: 'Active' | 'Inactive' | string;
   profileImageUrl?: string;
+  employeeCategory?: 'White Collar' | 'Blue Collar' | string;
 }
 
 export interface TreeNode extends Employee {
   children: TreeNode[];
   directReportsCount: number;
   totalSubtreeCount: number;
+  blueCollarCount?: number;
+  isShiftIncharge?: boolean;
   depth: number;
   isCollapsed?: boolean;
 }
@@ -73,6 +76,7 @@ export interface FilterState {
   location: string;
   designation: string;
   employmentType: string;
+  employeeCategory?: string;
   status: string;
   filterMode: 'highlight' | 'dim' | 'isolate';
 }

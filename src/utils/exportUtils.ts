@@ -118,7 +118,7 @@ export const generateCompleteOrgChartSVG = (
           isCEO
             ? `<g transform="translate(160, 9)">
                 <rect x="0" y="0" width="88" height="20" rx="10" fill="#fef3c7" stroke="#fde68a" />
-                <text x="44" y="14" font-family="'Inter', system-ui, sans-serif" font-size="9" font-weight="800" fill="#78350f" text-anchor="middle">👑 CEO / MD</text>
+                <text x="44" y="14" font-family="'Inter', system-ui, sans-serif" font-size="9" font-weight="800" fill="#78350f" text-anchor="middle">👑 CMD</text>
                </g>`
             : `<circle cx="242" cy="19" r="4" fill="#10b981" />`
         }
@@ -348,7 +348,7 @@ export const downloadStandaloneHtmlBundle = (
           <p class="text-xs text-slate-500 font-semibold mt-1">\${emp.department} \${emp.businessUnit ? '• ' + emp.businessUnit : ''}</p>
         </div>
         <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] font-semibold text-slate-600">
-          <span>Manager: \${emp.managerCode || 'CEO / MD'}</span>
+          <span>Manager: \${emp.managerCode || 'CMD'}</span>
           \${emp.location ? \`<span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200 font-bold">📍 \${emp.location}</span>\` : ''}
         </div>
       \`;

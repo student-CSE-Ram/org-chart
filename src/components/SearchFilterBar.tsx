@@ -48,12 +48,14 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
     filters.location !== '' ||
     filters.designation !== '' ||
     filters.employmentType !== '' ||
+    (filters.employeeCategory ?? '') !== '' ||
     filters.status !== '';
 
   const activeFilterDropdownsCount = [
     filters.department,
     filters.businessUnit,
     filters.location,
+    filters.employeeCategory,
     filters.status
   ].filter(Boolean).length;
 
@@ -189,6 +191,21 @@ export const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
             ))}
           </select>
         )}
+
+        {/* Employee Category Filter (White Collar vs Blue Collar) */}
+        <select
+          value={filters.employeeCategory || ''}
+          onChange={(e) => onFilterChange({ employeeCategory: e.target.value })}
+          className={`px-2.5 py-1.5 sm:py-2 rounded-xl text-xs font-medium focus:outline-none flex-1 md:flex-none ${
+            isDarkMode
+              ? 'bg-slate-800 border border-slate-700 text-slate-200 focus:border-blue-500'
+              : 'bg-slate-100 border border-slate-200 text-slate-800 focus:border-blue-500'
+          }`}
+        >
+          <option value="">All Worker Categories</option>
+          <option value="White Collar">White Collar</option>
+          <option value="Blue Collar">Blue Collar</option>
+        </select>
 
         {/* Status Filter */}
         <select

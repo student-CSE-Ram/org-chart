@@ -193,6 +193,7 @@ export const App: React.FC = () => {
       if (filters.location && emp.location !== filters.location) return false;
       if (filters.designation && emp.designation !== filters.designation) return false;
       if (filters.employmentType && emp.employmentType !== filters.employmentType) return false;
+      if (filters.employeeCategory && emp.employeeCategory !== filters.employeeCategory) return false;
       if (filters.status && emp.status !== filters.status) return false;
 
       return true;
@@ -222,6 +223,10 @@ export const App: React.FC = () => {
       if (emp.managerCode) initialCollapsed.add(emp.employeeCode);
     });
     setCollapsedNodeIds(initialCollapsed);
+    const ceo = employees.find((e) => !e.managerCode);
+    if (ceo) {
+      setSelectedEmployeeCode(ceo.employeeCode);
+    }
   }, [employees]);
 
   const handleSelectEmployeeNode = useCallback((emp: TreeNode) => {
@@ -267,6 +272,7 @@ export const App: React.FC = () => {
       location: '',
       designation: '',
       employmentType: '',
+      employeeCategory: '',
       status: '',
       filterMode: 'highlight'
     });

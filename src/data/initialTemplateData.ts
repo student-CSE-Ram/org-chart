@@ -1,7 +1,7 @@
 import type { Employee } from '../types/orgChart';
 
 export const INITIAL_COMPANY_DATA: Employee[] = [
-  // Executive Leadership
+  // Executive Leadership (White Collar)
   {
     employeeCode: 'EMP-001',
     name: 'Vikramaditya Singhania',
@@ -14,6 +14,7 @@ export const INITIAL_COMPANY_DATA: Employee[] = [
     phone: '+91 98200 11001',
     dateOfJoining: '2015-04-01',
     employmentType: 'Permanent',
+    employeeCategory: 'White Collar',
     status: 'Active',
     profileImageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=250'
   },
@@ -29,6 +30,7 @@ export const INITIAL_COMPANY_DATA: Employee[] = [
     phone: '+91 98860 22002',
     dateOfJoining: '2018-02-15',
     employmentType: 'Permanent',
+    employeeCategory: 'White Collar',
     status: 'Active',
     profileImageUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=250'
   },
@@ -44,6 +46,7 @@ export const INITIAL_COMPANY_DATA: Employee[] = [
     phone: '+91 98211 33003',
     dateOfJoining: '2017-09-10',
     employmentType: 'Permanent',
+    employeeCategory: 'White Collar',
     status: 'Active',
     profileImageUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=250'
   },
@@ -59,11 +62,12 @@ export const INITIAL_COMPANY_DATA: Employee[] = [
     phone: '+91 98300 44004',
     dateOfJoining: '2016-11-01',
     employmentType: 'Permanent',
+    employeeCategory: 'White Collar',
     status: 'Active',
     profileImageUrl: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=250'
   },
 
-  // Department 1: Engineering & Tech (Detailed Subtree)
+  // Department 1: Engineering & Tech (White Collar)
   {
     employeeCode: 'EMP-010',
     name: 'Arjun Mehta',
@@ -76,6 +80,7 @@ export const INITIAL_COMPANY_DATA: Employee[] = [
     phone: '+91 98860 10100',
     dateOfJoining: '2019-01-15',
     employmentType: 'Permanent',
+    employeeCategory: 'White Collar',
     status: 'Active',
     profileImageUrl: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=250'
   },
@@ -91,133 +96,12 @@ export const INITIAL_COMPANY_DATA: Employee[] = [
     phone: '+91 98860 10111',
     dateOfJoining: '2019-06-01',
     employmentType: 'Permanent',
+    employeeCategory: 'White Collar',
     status: 'Active',
     profileImageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250'
   },
-  {
-    employeeCode: 'EMP-012',
-    name: 'Rahul Verma',
-    managerCode: 'EMP-010',
-    designation: 'Lead Frontend Architect',
-    department: 'Engineering & Tech',
-    businessUnit: 'Digital Solutions',
-    location: 'Bengaluru Innovation Center',
-    email: 'rahul.verma@orgchart.com',
-    phone: '+91 98860 10122',
-    dateOfJoining: '2020-03-20',
-    employmentType: 'Permanent',
-    status: 'Active',
-    profileImageUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=250'
-  },
-  {
-    employeeCode: 'EMP-013',
-    name: 'Sneha Patel',
-    managerCode: 'EMP-010',
-    designation: 'Backend Engineering Manager',
-    department: 'Engineering & Tech',
-    businessUnit: 'Digital Solutions',
-    location: 'Bengaluru Innovation Center',
-    email: 'sneha.patel@orgchart.com',
-    phone: '+91 98860 10133',
-    dateOfJoining: '2020-08-14',
-    employmentType: 'Permanent',
-    status: 'Active',
-    profileImageUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=250'
-  },
-  {
-    employeeCode: 'EMP-014',
-    name: 'Karan Joshi',
-    managerCode: 'EMP-012',
-    designation: 'Senior UI/UX Engineer',
-    department: 'Engineering & Tech',
-    businessUnit: 'Digital Solutions',
-    location: 'Delhi Regional Office',
-    email: 'karan.joshi@orgchart.com',
-    phone: '+91 98860 10144',
-    dateOfJoining: '2021-11-05',
-    employmentType: 'Permanent',
-    status: 'Active',
-    profileImageUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=250'
-  },
-  {
-    employeeCode: 'EMP-015',
-    name: 'Divya Iyer',
-    managerCode: 'EMP-013',
-    designation: 'Senior DevOps Specialist',
-    department: 'Engineering & Tech',
-    businessUnit: 'Digital Solutions',
-    location: 'Bengaluru Innovation Center',
-    email: 'divya.iyer@orgchart.com',
-    phone: '+91 98860 10155',
-    dateOfJoining: '2022-02-01',
-    employmentType: 'Permanent',
-    status: 'Active',
-    profileImageUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=250'
-  },
 
-  // Department 2: Human Resources & People Ops (Detailed Subtree)
-  {
-    employeeCode: 'EMP-020',
-    name: 'Siddharth Deshmukh',
-    managerCode: 'EMP-003',
-    designation: 'Head of Talent Acquisition',
-    department: 'Human Resources',
-    businessUnit: 'Corporate HQ',
-    location: 'Mumbai, HQ',
-    email: 'siddharth.d@orgchart.com',
-    phone: '+91 98211 20200',
-    dateOfJoining: '2018-05-12',
-    employmentType: 'Permanent',
-    status: 'Active',
-    profileImageUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=250'
-  },
-  {
-    employeeCode: 'EMP-021',
-    name: 'Kavita Menon',
-    managerCode: 'EMP-003',
-    designation: 'HR Business Partner Lead',
-    department: 'Human Resources',
-    businessUnit: 'Corporate HQ',
-    location: 'Mumbai, HQ',
-    email: 'kavita.m@orgchart.com',
-    phone: '+91 98211 20211',
-    dateOfJoining: '2019-10-01',
-    employmentType: 'Permanent',
-    status: 'Active',
-    profileImageUrl: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&q=80&w=250'
-  },
-  {
-    employeeCode: 'EMP-022',
-    name: 'Rohan Banerjee',
-    managerCode: 'EMP-020',
-    designation: 'Senior Technical Recruiter',
-    department: 'Human Resources',
-    businessUnit: 'Corporate HQ',
-    location: 'Delhi Regional Office',
-    email: 'rohan.b@orgchart.com',
-    phone: '+91 98211 20222',
-    dateOfJoining: '2021-04-18',
-    employmentType: 'Permanent',
-    status: 'Active',
-    profileImageUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=250'
-  },
-  {
-    employeeCode: 'EMP-023',
-    name: 'Meera Kulkarni',
-    managerCode: 'EMP-021',
-    designation: 'People Operations Manager',
-    department: 'Human Resources',
-    businessUnit: 'Corporate HQ',
-    location: 'Mumbai, HQ',
-    email: 'meera.k@orgchart.com',
-    phone: '+91 98211 20233',
-    dateOfJoining: '2021-07-22',
-    employmentType: 'Permanent',
-    status: 'Active',
-    profileImageUrl: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=250'
-  },
-
-  // Operations Department Node for Complete Hierarchy
+  // Department 2: Operations & Plant Hierarchy
   {
     employeeCode: 'EMP-030',
     name: 'Amitabh Sen',
@@ -230,7 +114,152 @@ export const INITIAL_COMPANY_DATA: Employee[] = [
     phone: '+91 98300 30300',
     dateOfJoining: '2017-03-01',
     employmentType: 'Permanent',
+    employeeCategory: 'White Collar',
     status: 'Active',
     profileImageUrl: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=250'
+  },
+
+  // Shift Incharges (White Collar roles leading Plant Operations)
+  {
+    employeeCode: 'EMP-031',
+    name: 'Suresh Kumar',
+    managerCode: 'EMP-030',
+    designation: 'Shift Incharge - Blast Furnace (A-Shift)',
+    department: 'Plant Operations',
+    businessUnit: 'Steel & Manufacturing',
+    location: 'Kolkata Steel Plant',
+    email: 'suresh.k@orgchart.com',
+    phone: '+91 98300 30311',
+    dateOfJoining: '2018-08-10',
+    employmentType: 'Permanent',
+    employeeCategory: 'White Collar',
+    status: 'Active'
+  },
+  {
+    employeeCode: 'EMP-032',
+    name: 'Ramesh Chander',
+    managerCode: 'EMP-030',
+    designation: 'Shift Incharge - Rolling Mill (B-Shift)',
+    department: 'Plant Operations',
+    businessUnit: 'Steel & Manufacturing',
+    location: 'Kolkata Steel Plant',
+    email: 'ramesh.c@orgchart.com',
+    phone: '+91 98300 30322',
+    dateOfJoining: '2019-02-14',
+    employmentType: 'Permanent',
+    employeeCategory: 'White Collar',
+    status: 'Active'
+  },
+
+  // Blue Collar Workers reporting to Shift Incharge Suresh Kumar (EMP-031)
+  {
+    employeeCode: 'BC-101',
+    name: 'Dinesh Yadav',
+    managerCode: 'EMP-031',
+    designation: 'Senior Furnace Operator',
+    department: 'Plant Operations',
+    businessUnit: 'Steel & Manufacturing',
+    location: 'Kolkata Steel Plant',
+    employmentType: 'Permanent',
+    employeeCategory: 'Blue Collar',
+    status: 'Active'
+  },
+  {
+    employeeCode: 'BC-102',
+    name: 'Manoj Paswan',
+    managerCode: 'EMP-031',
+    designation: 'Furnace Technician',
+    department: 'Plant Operations',
+    businessUnit: 'Steel & Manufacturing',
+    location: 'Kolkata Steel Plant',
+    employmentType: 'Permanent',
+    employeeCategory: 'Blue Collar',
+    status: 'Active'
+  },
+  {
+    employeeCode: 'BC-103',
+    name: 'Sunil Mahato',
+    managerCode: 'EMP-031',
+    designation: 'Raw Material Loader',
+    department: 'Plant Operations',
+    businessUnit: 'Steel & Manufacturing',
+    location: 'Kolkata Steel Plant',
+    employmentType: 'Contract',
+    employeeCategory: 'Blue Collar',
+    status: 'Active'
+  },
+  {
+    employeeCode: 'BC-104',
+    name: 'Vicky Sahani',
+    managerCode: 'EMP-031',
+    designation: 'Furnace Assistant & Helper',
+    department: 'Plant Operations',
+    businessUnit: 'Steel & Manufacturing',
+    location: 'Kolkata Steel Plant',
+    employmentType: 'Contract',
+    employeeCategory: 'Blue Collar',
+    status: 'Active'
+  },
+
+  // Blue Collar Workers reporting to Shift Incharge Ramesh Chander (EMP-032)
+  {
+    employeeCode: 'BC-201',
+    name: 'Gopal Mondal',
+    managerCode: 'EMP-032',
+    designation: 'Rolling Mill Master Technician',
+    department: 'Plant Operations',
+    businessUnit: 'Steel & Manufacturing',
+    location: 'Kolkata Steel Plant',
+    employmentType: 'Permanent',
+    employeeCategory: 'Blue Collar',
+    status: 'Active'
+  },
+  {
+    employeeCode: 'BC-202',
+    name: 'Biplab Biswas',
+    managerCode: 'EMP-032',
+    designation: 'Bar Mill Machine Operator',
+    department: 'Plant Operations',
+    businessUnit: 'Steel & Manufacturing',
+    location: 'Kolkata Steel Plant',
+    employmentType: 'Permanent',
+    employeeCategory: 'Blue Collar',
+    status: 'Active'
+  },
+  {
+    employeeCode: 'BC-203',
+    name: 'Santosh Bauri',
+    managerCode: 'EMP-032',
+    designation: 'Plant Mechanical Fitter',
+    department: 'Plant Operations',
+    businessUnit: 'Steel & Manufacturing',
+    location: 'Kolkata Steel Plant',
+    employmentType: 'Contract',
+    employeeCategory: 'Blue Collar',
+    status: 'Active'
+  },
+  {
+    employeeCode: 'BC-204',
+    name: 'Pradeep Das',
+    managerCode: 'EMP-032',
+    designation: 'Material Handling Helper',
+    department: 'Plant Operations',
+    businessUnit: 'Steel & Manufacturing',
+    location: 'Kolkata Steel Plant',
+    employmentType: 'Contract',
+    employeeCategory: 'Blue Collar',
+    status: 'Active'
+  },
+  {
+    employeeCode: 'BC-205',
+    name: 'Ashok Turi',
+    managerCode: 'EMP-032',
+    designation: 'Crane & Rigging Operator',
+    department: 'Plant Operations',
+    businessUnit: 'Steel & Manufacturing',
+    location: 'Kolkata Steel Plant',
+    employmentType: 'Contract',
+    employeeCategory: 'Blue Collar',
+    status: 'Active'
   }
 ];

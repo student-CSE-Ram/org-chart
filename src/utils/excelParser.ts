@@ -6,6 +6,18 @@ const normalizeKey = (key: string): string => {
   return key.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
 };
 
+export const isShiftInchargeRole = (designation?: string): boolean => {
+  if (!designation) return false;
+  const d = designation.toLowerCase();
+  return (
+    d.includes('shift incharge') ||
+    d.includes('shift in-charge') ||
+    d.includes('shift in charge') ||
+    d.includes('shift supervisor') ||
+    d.includes('shift lead')
+  );
+};
+
 export const parseExcelFile = async (file: File): Promise<Employee[]> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -31,6 +43,15 @@ export const parseExcelFile = async (file: File): Promise<Employee[]> => {
             return '';
           };
 
+          const rawCategory = getVal([
+            'Employee Category',
+            'EmployeeCategory',
+            'Collar Type',
+            'Worker Type',
+            'Category',
+            'Collar'
+          ]);
+
           return {
             employeeCode: getVal(['Employee Code', 'EmployeeCode', 'EmpCode', 'ID', 'Employee ID']),
             name: getVal(['Employee Name', 'EmployeeName', 'Name', 'Full Name']),
@@ -39,6 +60,7 @@ export const parseExcelFile = async (file: File): Promise<Employee[]> => {
             department: getVal(['Department', 'Dept']) || 'General',
             businessUnit: getVal(['Business Unit', 'BusinessUnit', 'BU', 'Division']) || 'Default BU',
             location: getVal(['Location', 'Site', 'Site Name', 'Office', 'City', 'Work Location', 'Branch', 'Plant']) || 'Head Office',
+            employeeCategory: rawCategory ? rawCategory : undefined,
             email: getVal(['Email', 'Email Address', 'Mail']),
             phone: getVal(['Phone', 'Phone Number', 'Mobile', 'Contact']),
             dateOfJoining: getVal(['Date of Joining', 'DateOfJoining', 'DOJ', 'Joining Date']),
@@ -52,6 +74,35 @@ export const parseExcelFile = async (file: File): Promise<Employee[]> => {
         const validEmployees = employees.filter(
           (emp) => emp.employeeCode !== '' || emp.name !== ''
         );
+
+        // Build emp map to propagate Shift Incharge -> Blue Collar logic
+        const empMap = new Map<string, Employee>();
+        validEmployees.forEach((emp) => empMap.set(emp.employeeCode, emp));
+
+        const isUnderShiftIncharge = (emp: Employee): boolean => {
+          let currentMgrCode = emp.managerCode;
+          const visited = new Set<string>();
+
+          while (currentMgrCode && empMap.has(currentMgrCode) && !visited.has(currentMgrCode)) {
+            visited.add(currentMgrCode);
+            const mgr = empMap.get(currentMgrCode)!;
+            if (isShiftInchargeRole(mgr.designation)) {
+              return true;
+            }
+            currentMgrCode = mgr.managerCode;
+          }
+          return false;
+        };
+
+        validEmployees.forEach((emp) => {
+          if (!emp.employeeCategory) {
+            if (isUnderShiftIncharge(emp)) {
+              emp.employeeCategory = 'Blue Collar';
+            } else {
+              emp.employeeCategory = 'White Collar';
+            }
+          }
+        });
 
         resolve(validEmployees);
       } catch (err) {

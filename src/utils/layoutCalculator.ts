@@ -1,11 +1,12 @@
 import type { Node, Edge } from '@xyflow/react';
 import type { Employee, TreeNode, LayoutOrientation } from '../types/orgChart';
+import { isShiftInchargeRole } from './excelParser';
 
 // Node card dimensions for layout calculation
-const NODE_WIDTH = 260;
-const NODE_HEIGHT = 160;
+const NODE_WIDTH = 280;
+const NODE_HEIGHT = 240;
 const HORIZONTAL_GAP = 60;
-const VERTICAL_GAP = 110;
+const VERTICAL_GAP = 120;
 
 /**
  * Builds tree nodes from flat employee list
@@ -24,6 +25,8 @@ export const buildEmployeeTree = (
       children: [],
       directReportsCount: 0,
       totalSubtreeCount: 0,
+      blueCollarCount: 0,
+      isShiftIncharge: isShiftInchargeRole(emp.designation),
       depth: 0,
       isCollapsed: collapsedNodeIds.has(emp.employeeCode)
     });
@@ -40,17 +43,24 @@ export const buildEmployeeTree = (
     }
   });
 
-  // 3. Compute direct reports count and total subtree counts recursively
+  // 3. Compute direct reports count, direct blue collar counts and total subtree counts recursively
   const computeCountsAndDepth = (node: TreeNode, currentDepth: number): number => {
     node.depth = currentDepth;
     node.directReportsCount = node.children.length;
     let subtreeCount = 0;
+    let directBCount = 0;
 
     node.children.forEach((child) => {
-      subtreeCount += 1 + computeCountsAndDepth(child, currentDepth + 1);
+      const childSubtreeCount = computeCountsAndDepth(child, currentDepth + 1);
+      subtreeCount += 1 + childSubtreeCount;
+
+      if (child.employeeCategory === 'Blue Collar') {
+        directBCount += 1;
+      }
     });
 
     node.totalSubtreeCount = subtreeCount;
+    node.blueCollarCount = directBCount;
     return subtreeCount;
   };
 
@@ -61,21 +71,40 @@ export const buildEmployeeTree = (
 
 /**
  * Computes node coordinates (x,y) and edge connections for React Flow
+ * NOTE: Blue Collar workers are NOT rendered as individual node cards on the canvas.
+ * Instead, their headcount is displayed directly on the Shift Incharge / Manager card.
  */
 export const calculateFlowElements = (
   employees: Employee[],
   collapsedNodeIds: Set<string>,
   orientation: LayoutOrientation = 'TB'
 ): { nodes: Node[]; edges: Edge[] } => {
-  const treeRoots = buildEmployeeTree(employees, collapsedNodeIds);
+  const fullTreeRoots = buildEmployeeTree(employees, collapsedNodeIds);
 
   const nodes: Node[] = [];
   const edges: Edge[] = [];
 
   let currentRootX = 0;
 
+  // Filter out Blue Collar nodes from visual tree hierarchy rendering
+  const pruneBlueCollarFromLayout = (node: TreeNode): TreeNode => {
+    const whiteCollarChildren = node.children
+      .filter((child) => child.employeeCategory !== 'Blue Collar')
+      .map(pruneBlueCollarFromLayout);
+
+    return {
+      ...node,
+      children: whiteCollarChildren,
+      directReportsCount: whiteCollarChildren.length
+    };
+  };
+
+  const visibleRoots = fullTreeRoots
+    .filter((root) => root.employeeCategory !== 'Blue Collar')
+    .map(pruneBlueCollarFromLayout);
+
   const layoutSubtree = (node: TreeNode, depth: number): { minX: number; maxX: number; width: number } => {
-    // If node is collapsed, we do not layout its children
+    // If node is collapsed or has no visible White Collar children
     if (node.isCollapsed || node.children.length === 0) {
       const x = currentRootX;
       currentRootX += NODE_WIDTH + HORIZONTAL_GAP;
@@ -94,17 +123,19 @@ export const calculateFlowElements = (
           hasChildren: node.children.length > 0,
           isCollapsed: node.isCollapsed,
           directReportsCount: node.directReportsCount,
-          totalSubtreeCount: node.totalSubtreeCount
+          totalSubtreeCount: node.totalSubtreeCount,
+          blueCollarCount: node.blueCollarCount,
+          isShiftIncharge: node.isShiftIncharge
         }
       });
 
       return { minX: x, maxX: x, width: NODE_WIDTH };
     }
 
-    // Recursively layout children first
+    // Recursively layout White Collar children first
     const childXPositions: number[] = [];
     node.children.forEach((child) => {
-      // Connect edge from parent to child
+      // Connect edge from parent to White Collar child
       edges.push({
         id: `e-${node.employeeCode}-${child.employeeCode}`,
         source: node.employeeCode,
@@ -136,14 +167,16 @@ export const calculateFlowElements = (
         hasChildren: true,
         isCollapsed: node.isCollapsed,
         directReportsCount: node.directReportsCount,
-        totalSubtreeCount: node.totalSubtreeCount
+        totalSubtreeCount: node.totalSubtreeCount,
+        blueCollarCount: node.blueCollarCount,
+        isShiftIncharge: node.isShiftIncharge
       }
     });
 
     return { minX: firstChildX, maxX: lastChildX, width: lastChildX - firstChildX + NODE_WIDTH };
   };
 
-  treeRoots.forEach((root) => {
+  visibleRoots.forEach((root) => {
     layoutSubtree(root, 0);
   });
 

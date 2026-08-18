@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" width="100%" height="100%">
+  <rect width="600" height="160" rx="16" fill="#4B2320"/>
+  <text x="300" y="105" font-family="'Inter', sans-serif, system-ui" font-weight="900" font-size="78" fill="#FFFFFF" text-anchor="middle" letter-spacing="4">
+    GALLANTT
+  </text>
+  <!-- Orange Triangles under 'A's -->
+  <polygon points="152,118 174,136 130,136" fill="#F26522" />
+  <polygon points="296,118 318,136 274,136" fill="#F26522" />
+</svg>
